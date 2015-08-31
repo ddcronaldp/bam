@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://bam.dealer.ddc/schema/budgetAdjustmentOrder#",
+  "javaType" : "com.dealertrack.bam.model.BudgetAdjustmentOrder",
+  "type": "object",
+  "description": "The representation of a Budget Adjustment Order",
+  "properties": {
+    "budgetAdjustmentAmount": {"type": "number"},
+    "budgetAdjustmentType": {"type": "string"},
+    "orderId": {"type": "string"},
+    "orderStatus": {"type": "string"}
+  }
+}

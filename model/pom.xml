@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>bam-model</artifactId>
+    <name>bam-model</name>
+    <description>Provides the model used to access the bam</description>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>com.dealertrack</groupId>
+        <artifactId>bam-parent</artifactId>
+        <version>0.1.5-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-simple-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-spring3</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>bean-validator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>aopalliance</groupId>
+                    <artifactId>aopalliance</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jvnet</groupId>
+                    <artifactId>tiger-types</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.inject</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.raml.plugins</groupId>
+                <artifactId>raml-jaxrs-maven-plugin</artifactId>
+                <version>1.3.3</version>
+                <configuration>
+                    <jaxrsVersion>2.0</jaxrsVersion>
+                    <jsonMapper>jackson2</jsonMapper>
+
+                    <jsonMapperConfiguration>
+                        <generateBuilders>true</generateBuilders>
+                        <includeHashcodeAndEquals>true</includeHashcodeAndEquals>
+                        <includeToStringuseLongIntegers>true</includeToStringuseLongIntegers>
+                    </jsonMapperConfiguration>
+
+
+
+
+                </configuration>
+                <executions>
+                    <!-- single resource: you can use this one excution. If you have multiple raml files that you want to
+                         generate into different paths, see below for a more advanced example -->
+                    <execution>
+                        <id>generate-model</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${basedir}/src/main/raml/bam-services.raml</sourcePath>
+                            </sourcePaths>
+                            <basePackageName>com.dealertrack.bam</basePackageName>
+                        </configuration>
+                    </execution>
+                    <!-- MULTIPLE RESOURCES: -->
+                    <!-- if you are generating multiple resources, you can split them into different base packages like this:
+                    <execution>
+                        <id>generate-contact-model</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${basedir}/src/main/raml/support-contact-info.raml</sourcePath>
+                            </sourcePaths>
+                            <basePackageName>com.dealer.cccs.support.contact</basePackageName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-application-definition-model</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${basedir}/src/main/raml/application-definition.raml</sourcePath>
+                            </sourcePaths>
+                            <basePackageName>com.dealer.cccs.application.definition</basePackageName>
+                        </configuration>
+                    </execution>
+                    -->
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

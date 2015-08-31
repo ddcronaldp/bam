@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/admiral-services">
+	<Valve className="org.apache.catalina.valves.AccessLogValve"
+		prefix="admiral-services" suffix=".log"
+		pattern='%h %l %t "%r" %s %b %D '/>
+
+	<!--<Loader loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader"/>-->
+</Context>

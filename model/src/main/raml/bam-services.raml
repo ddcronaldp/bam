@@ -1,0 +1,133 @@
+#%RAML 0.8
+
+title: BAM - Budget Adjustment Manager REST service
+version: v1
+baseUri: https://bam.dealer.ddc/api/{version}/
+
+securitySchemes:
+    - oauth_2_0:
+        type: OAuth 2.0
+        describedBy:
+            headers:
+                Authorization:
+                    type: string
+                    description: OAuth access_token
+                    example: Bearer 71543fa6a11044b0a9f3a8354ddcb00e
+            responses:
+                401:
+                    description: Invalid or expired token. To resolve you must get a new auth_token, by either reauthenticating or refreshing using refresh_token.
+                403:
+                    description: User is authenticated but doesn't have sufficent privleges for the requested resource.
+        settings:
+          authorizationUri: https://login.dealer.com/oauth
+          accessTokenUri: https://login.dealer.com/oauth
+          authorizationGrants: [ credentials ]
+
+schemas:
+  - budgetAdjustmentOrder:      !include budgetAdjustmentOrder.schema
+  - badRequest:                 !include badRequest.schema
+  - notFound:                   !include notFound.schema
+  - oauth2_token:               !include oauth2-token.schema
+
+traits:       !include traits.raml
+
+resourceTypes:
+- pagedResult:
+    get:
+      description: Get a paged result of <<resourcePathName|!singularize>>
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {  "$schema": "http://json-schema.org/draft-03/schema",
+                     "javaType" : "com.dealertrack.bam.model.<<resourcePathName|!capitalize>>Collection",
+                     "type": "object",
+                     "description": "A paged collection of <<resourcePathName>>",
+                     "properties": {
+                         "total_items":  { "type": "integer", "required": true },
+                         "start_index":  { "type": "integer", "required": true },
+                         "end_index":    { "type": "integer", "required": true },
+
+                         "<<resourcePathName>>":  {
+                            "type": "array",
+                            "items": { "$ref": "<<resourcePathName|!singularize>>" }
+                         }
+                     }
+                }
+    post:
+      description: Create a new <<resourcePathName|!singularize>>
+      body:
+        application/json:
+          schema: <<resourcePathName|!singularize>>
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The <<resourcePathName|!singularize>> was created." }
+
+- single-summary:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    get:
+      description: Get the <<resourcePathName|!singularize>> with <<resourcePathName|!singularize>>Id = {<<resourcePathName|!singularize>>Id}
+      responses:
+        200:
+          body:
+            application/json:
+              schema: <<resourcePathName|!singularize>>
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "<<resourcePathName|!singularize>> not found" }
+
+
+/budgetAdjustmentOrder:
+  type: pagedResult
+  get:
+    queryParameters:
+      accountId:
+        displayName: Account Id
+        type: integer
+        description: The Advertising account id
+        example: 6066
+        required: false
+      programId:
+        displayName: Program Id
+        type: integer
+        description: The Advertising program id
+        example: 8
+        required: false
+      status:
+        displayName: Status
+        type: string
+        description: The status of the campaigns
+        example: Active
+        required: false
+
+/oauth:
+  post:
+    description: The POST operation adds an object to a specified bucket using HTML forms.
+    body:
+      application/x-www-form-urlencoded:
+        formParameters:
+          grant_type:
+            type: string
+            description: OAUTH grant type. password is currently the only supported type.
+            example: password
+          client_id:
+            type: string
+            description: Always ddc.mobile
+            example: ddc.mobile
+          username:
+            type: string
+          password:
+            type: string
+
+    responses:
+      201:
+        body:
+          application/json:
+            schema: oauth2_token
+

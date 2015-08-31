@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "description": "Generic 400 bad request response",
+  "properties":
+  {
+    "error_code":
+    {
+      "description" : "Text based error code",
+      "type": "string",
+      "required":true,
+      "example": "BAD_REQUEST.MISSING_PARAM"
+    },
+    "message":
+    {
+      "type": "string",
+      "required":true
+    }
+  }
+}

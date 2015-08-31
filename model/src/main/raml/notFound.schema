@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "description": "Generic 404 not found request response",
+  "properties":
+  {
+    "error_code":
+    {
+      "description" : "Text based error code",
+      "type": "string",
+      "required":true,
+      "example": "NOT_FOUND.ACCOUNT_NOT_FOUND"
+    },
+    "message":
+    {
+      "type": "string",
+      "required":true
+    }
+  }
+}

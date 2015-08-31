@@ -1,0 +1,41 @@
+- searchable:
+    queryParameters:
+      query:
+        description: |
+          JSON array [{"field1","value1","operator1"},{"field2","value2","operator2"},...,{"fieldN","valueN","operatorN"}] <<description>>
+        example: |
+          <<example>>
+- orderable:
+    queryParameters:
+      orderBy:
+        description: |
+          Order by field: <<fieldsList>>
+        type: string
+        required: false
+      order:
+        description: Order
+        enum: [desc, asc]
+        default: desc
+        required: false
+- pageable:
+    queryParameters:
+      offset:
+        description: Skip over a number of elements by specifying an offset value for the query
+        type: integer
+        required: false
+        example: 200
+        default: 0
+      limit:
+        description: Limit the number of elements on the response
+        type: integer
+        required: false
+        example: 50
+        default: 100
+- secured:
+    headers:
+      Auth-Token:
+        description: Authorization header with the secret token
+        example: Bearer 71543fa6a11044b0a9f3a8354ddcb00e
+    responses:
+      403:
+        description: Not Authorized. Header absent or token is invalid.

@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "string",
+  "description": "A secret token",
+  "properties":
+    {
+      "expires_in":
+      {
+        "description" : "number of seconds that the access_token is valid for",
+        "type": "string",
+        "required":true,
+        "example": "21600"
+      },
+      "refresh_token":
+      {
+        "description" : "refresh token can be used to retrieve a new access_token when the current access token expires",
+        "type": "string",
+        "required":true
+      },
+      "access_token":
+      {
+        "description" : "Token used to make authenticated requests",
+        "type": "string",
+        "required":true
+     }
+    }
+}
